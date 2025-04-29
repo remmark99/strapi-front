@@ -51,6 +51,7 @@ export default function Lesson29() {
     window.location.reload();
   }
 
+  
   return (
     <div>
       <div>
