@@ -16,40 +16,59 @@ export default function Lesson29() {
     }
   })
 
-  const { data: vacations = [] } = useQuery({
-    queryKey: ["vacations"],
+  const { data: works = [] } = useQuery({
+    queryKey: ["works"],
     queryFn: async () => {
-      const res = await supabase.from("vacations").select("*");
+      const res = await supabase.from("works").select("*");
 
       return res.data;
     }
   })
 
-  console.log(users, vacations);
+  console.log(users, works);
 
-  const deleteVacation = async (vacationId: string) => {
-    await supabase.from("vacations").delete().eq("id", vacationId);
+  const deleteWorks = async (vacationId: string) => {
+    await supabase.from("works").delete().eq("id", vacationId);
+    window.location.reload();
   }
 
   const createUser = async () => {
-    await supabase.from("students").insert({
-      name: "Primer",
+    await supabase.from("users").insert({
+      fullname: "Помидор",
     });
+    window.location.reload();
   }
 
+  const createWork = async () => {
+    await supabase.from("works").insert({
+      // id: Math.round(Math.random(), * 200000000),
+      name: "Помидор",
+      desc: "2+4",
+      subject: "математика",
+      body: "6",
+      student: "1"
+    });
+    window.location.reload();
+  }
+
+  
   return (
     <div>
       <div>
         Пользователи:
-        {users.map((user) => (<div>{user.email}</div>))}
+        {users.map((user) => (<div>{user.fullname}<div>{user.group}</div></div>))}
       </div>
       <div>
         Отпуска:
-        {vacations.map((vacation) => (<div><div>{vacation.created_at}</div><button className='bg-red-500 cursor-pointer' onClick={() => deleteVacation(vacation.id)}>Удалить</button></div>))}
+        {works.map((work) => (<div><div>{work.desc}<div>{work.body}</div></div><button className='bg-red-500 cursor-pointer' onClick={() => deleteWorks(work.id)}>Удалить</button></div>))}
       </div>
       <div>
         <input type='text' className='border border-black' />
         <button className='bg-green-500 cursor-pointer' onClick={() => createUser()}>Добавить пользователя</button>
+      </div>
+      <div>
+        <input type='text' className='border border-black' />
+        <button className='bg-green-500 cursor-pointer' onClick={() => createWork()}>Добавить работу</button>
       </div>
     </div>
   )
